@@ -5,15 +5,17 @@ namespace Maheke.Gov.Domain;
 
 public static class AssetHelper
 {
+    public const string NativeCode = "XLM";
     public const string UsdcCode = "USDC";
     public const string YusdcCode = "yUSDC";
 
     public static readonly Asset USDC = GetUsdcAsset();
     public static readonly Asset yUSDC = GetYusdcAsset();
+    public static readonly Asset XLM = GetNativeAsset();
 
     public static IEnumerable<WhitelistedAsset> GetWhitelistedAssets()
     {
-        return new List<WhitelistedAsset>() {new(USDC, 1), new(yUSDC, 1)};
+        return new List<WhitelistedAsset>() { new(USDC, 1), new(XLM, 1), new(yUSDC, 1) };
     }
 
     private static Asset GetUsdcAsset()
@@ -32,5 +34,9 @@ public static class AssetHelper
             throw new ApplicationException("YUSDC_ISSUER_ACCOUNT_PUBLIC_KEY NOT FOUND");
 
         return new Asset(new AccountAddress(yusdcIssuerAccountAddress), $"{YusdcCode}");
+    }
+    private static Asset GetNativeAsset()
+    {
+        return new Asset(new AccountAddress(""), "XLM", true);
     }
 }
